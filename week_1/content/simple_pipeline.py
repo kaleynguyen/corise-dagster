@@ -5,10 +5,9 @@ from dagster import graph, op
 def get_name():
     return "dagster"
 
-
-# @op
-# def capitalize_name(name):
-#     return name.capitalize()
+@op
+def capitalize_name(name):
+    return name.capitalize()
 
 
 @op
@@ -19,7 +18,7 @@ def hello(context, name):
 @graph
 def hello_dagster():
     # hello(capitalize_name(get_name()))
-    hello(get_name())
+    hello(capitalize_name(get_name()))
 
 
 job = hello_dagster.to_job()
