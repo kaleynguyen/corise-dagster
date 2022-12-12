@@ -57,12 +57,10 @@ def get_s3_data(context) -> List[Stock]:
                     description="List of stocks at given time")},
     out=Out(is_required=True, dagster_type=Aggregation)
 )
-def process_data(context, data: List[Stock]) -> Aggregation:
-    highest = data[0]
-    for element in data:
-        if element.high > highest.high:
-            highest = element
-    return Aggregation(date=highest.date, high=highest.high)
+def process_data(context, stocks: List[Stock]) -> Aggregation:
+    highest_stock = max(stocks, key=attrgetter('high'))
+    context.log.debug(highest_stock)
+    return Aggregation(date=highest_stock.date, high=highest_stock.high)
 
 
 @op(
@@ -74,6 +72,4 @@ def put_redis_data(context, highest_value: Aggregation):
 
 @job
 def week_1_pipeline():
-    data_from_s3 = get_s3_data()
-    highest_value = process_data(data_from_s3)
-    put_redis_data(highest_value)
+    put_redis_data(process_data(get_s3_data()))
