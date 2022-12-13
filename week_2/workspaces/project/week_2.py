@@ -37,7 +37,8 @@ def process_data(context, stocks: List[Stock]) -> Aggregation:
 )
 def put_redis_data(context, stock_agg: Aggregation):
     redis_client = context.resources.redis
-    redis_client.put_data(stock_agg.date.isoformat(), str(stock_agg.high))
+    redis_client.put_data(name = stock_agg.date.strftime('%Y-%m-%d'),
+                          value = str(stock_agg.high))
 
 
 @op(
@@ -47,7 +48,8 @@ def put_redis_data(context, stock_agg: Aggregation):
 )
 def put_s3_data(context, stock_agg: Aggregation):
     s3_client = context.resources.s3
-    s3_client.put_data(stock_agg.date.isoformat(), str(stock_agg.high))
+    s3_client.put_data( key_name = stock_agg.date.strftime('%Y-%m-%d'), 
+                        data = stock_agg)
 
 
 @graph
