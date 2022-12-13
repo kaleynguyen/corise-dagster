@@ -127,7 +127,7 @@ week_3_pipeline_docker = week_3_pipeline.to_job(
 week_3_schedule_local = ScheduleDefinition( job=week_3_pipeline_local,
                                             cron_schedule="*/15 * * * *")
 
-
+# ref: https://docs.dagster.io/concepts/partitions-schedules-sensors/schedules
 @schedule(
     job=week_3_pipeline_docker,
     cron_schedule="0 * * * *"
