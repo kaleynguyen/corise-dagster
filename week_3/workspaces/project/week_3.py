@@ -49,7 +49,7 @@ def process_data(context, stocks: List[Stock]) -> Aggregation:
 
 @op(
     required_resource_keys={"redis"},
-    description="Put highest stock onto redis",
+    description="Put highest stock to redis",
     ins={'stock_agg': In(Aggregation)}
 )
 def put_redis_data(context, stock_agg: Aggregation) -> Nothing:
@@ -60,7 +60,7 @@ def put_redis_data(context, stock_agg: Aggregation) -> Nothing:
 
 @op(
     required_resource_keys={"s3"},
-    description="Put highest stock onto *the same* s3",
+    description="Put highest stock to *the same* s3",
     ins={'stock_agg': In(Aggregation)}
 )
 def put_s3_data(context, stock_agg: Aggregation) -> Nothing:
